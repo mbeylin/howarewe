@@ -1,2 +1,5 @@
-# howarewe
-Smart contracts for the How Are We art project
+# How Are We
+`Version 0.1`
+
+`npm install` to install required packages
+`truffle test` to execute tests
