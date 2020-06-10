@@ -42,5 +42,16 @@ module.exports = {
       gasPrice: 6
     }
 
+  },
+  compilers: {
+      solc: {
+      version: "^0.6.0", // A version or constraint - Ex. "^0.5.0"
+      parser: "solcjs",  // Leverages solc-js purely for speedy parsing
+      settings: {
+        optimizer: {
+          enabled: false,
+        },
+      }
+    }
   }
 }

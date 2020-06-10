@@ -1,5 +1,5 @@
 const HowAreWe = artifacts.require("../contracts/HowAreWe");
-const HumanStandardToken = artifacts.require("../contracts/inherited/HumanStandardToken");
+const PausableToken = artifacts.require("../contracts/PausableToken");
 
 const utils = require('./helpers/Utils');
 
@@ -23,7 +23,7 @@ contract('HowAreWe', function(accounts) {
         assert(contractAdmin2 == admins[2]);
         
         let token = await registry.token();
-        let tokenContract = await HumanStandardToken.at(token);
+        let tokenContract = await PausableToken.at(token);
         
         let tokenBalance0 = await tokenContract.balanceOf(contributors[0]);
         let tokenBalance1 = await tokenContract.balanceOf(contributors[1]);
@@ -37,6 +37,9 @@ contract('HowAreWe', function(accounts) {
         assert(parseInt(tokenBalance2, 10) == 30000);
         assert(parseInt(tokenBalance3, 10) == 25000);
         assert(parseInt(tokenBalance4, 10) == 10000);
+        
+        let uri = await registry.tokenURI(0);
+        assert(uri == "QMblahblahblah");
 
     });
     it("Verifies that I can deploy the HowAreWe project with 25 people", async () => {
@@ -103,7 +106,7 @@ contract('HowAreWe', function(accounts) {
         assert(contractAdmin2 == admins[2]);
     
         let token = await registry.token();
-        let tokenContract = await HumanStandardToken.at(token);
+        let tokenContract = await PausableToken.at(token);
     
         let tokenBalance0 = await tokenContract.balanceOf(contributors[0]);
         let tokenBalance1 = await tokenContract.balanceOf(contributors[1]);
@@ -177,11 +180,11 @@ contract('HowAreWe', function(accounts) {
         let videoHash = "QMblahblahblah";
         let registry = await HowAreWe.new(admins, contributors, disbursements, videoHash);             
         let token = await registry.token();
-        let howToken = await HumanStandardToken.at(token);
-        let daiToken = await HumanStandardToken.new(1000000, "FakeDAI", 18, "DAI");
-        let laiToken = await HumanStandardToken.new(1000000, "FakeDAI", 18, "LAI");
-        let kaiToken = await HumanStandardToken.new(1000000, "FakeDAI", 18, "KAI");
-        let maiToken = await HumanStandardToken.new(1000000, "FakeDAI", 18, "MAI");
+        let howToken = await PausableToken.at(token);
+        let daiToken = await PausableToken.new("FakeDAI", "DAI", accounts[0], 1000000);
+        let laiToken = await PausableToken.new("FakeDAI", "LAI", accounts[0], 1000000);
+        let kaiToken = await PausableToken.new("FakeDAI", "KAI", accounts[0], 1000000);
+        let maiToken = await PausableToken.new("FakeDAI", "MAI", accounts[0], 1000000);
     
         await registry.pauseTokens(1, [daiToken.address, laiToken.address, kaiToken.address, maiToken.address], {from: accounts[1]});
     
@@ -203,11 +206,11 @@ contract('HowAreWe', function(accounts) {
         let videoHash = "QMblahblahblah";
         let registry = await HowAreWe.new(admins, contributors, disbursements, videoHash);             
         let token = await registry.token();
-        let howToken = await HumanStandardToken.at(token);
-        let daiToken = await HumanStandardToken.new(1000000, "FakeDAI", 18, "DAI");
-        let laiToken = await HumanStandardToken.new(1000000, "FakeDAI", 18, "LAI");
-        let kaiToken = await HumanStandardToken.new(1000000, "FakeDAI", 18, "KAI");
-        let maiToken = await HumanStandardToken.new(1000000, "FakeDAI", 18, "MAI");
+        let howToken = await PausableToken.at(token);
+        let daiToken = await PausableToken.new("FakeDAI", "DAI", accounts[0], 1000000);
+        let laiToken = await PausableToken.new("FakeDAI", "LAI", accounts[0], 1000000);
+        let kaiToken = await PausableToken.new("FakeDAI", "KAI", accounts[0], 1000000);
+        let maiToken = await PausableToken.new("FakeDAI", "MAI", accounts[0], 1000000);
     
 
         try {
@@ -226,11 +229,11 @@ contract('HowAreWe', function(accounts) {
         let videoHash = "QMblahblahblah";
         let registry = await HowAreWe.new(admins, contributors, disbursements, videoHash);             
         let token = await registry.token();
-        let howToken = await HumanStandardToken.at(token);
-        let daiToken = await HumanStandardToken.new(1000000, "FakeDAI", 18, "DAI");
-        let laiToken = await HumanStandardToken.new(1000000, "FakeDAI", 18, "LAI");
-        let kaiToken = await HumanStandardToken.new(1000000, "FakeDAI", 18, "KAI");
-        let maiToken = await HumanStandardToken.new(1000000, "FakeDAI", 18, "MAI");
+        let howToken = await PausableToken.at(token);
+        let daiToken = await PausableToken.new("FakeDAI", "DAI", accounts[0], 1000000);
+        let laiToken = await PausableToken.new("FakeDAI", "LAI", accounts[0], 1000000);
+        let kaiToken = await PausableToken.new("FakeDAI", "KAI", accounts[0], 1000000);
+        let maiToken = await PausableToken.new("FakeDAI", "MAI", accounts[0], 1000000);
     
         await daiToken.transfer(registry.address, 123);
         await laiToken.transfer(registry.address, 456);
@@ -259,11 +262,11 @@ contract('HowAreWe', function(accounts) {
         let videoHash = "QMblahblahblah";
         let registry = await HowAreWe.new(admins, contributors, disbursements, videoHash);             
         let token = await registry.token();
-        let howToken = await HumanStandardToken.at(token);
-        let daiToken = await HumanStandardToken.new(1000000, "FakeDAI", 18, "DAI", {from: accounts[5]});
-        let laiToken = await HumanStandardToken.new(1000000, "FakeDAI", 18, "LAI", {from: accounts[5]});
-        let kaiToken = await HumanStandardToken.new(1000000, "FakeDAI", 18, "KAI", {from: accounts[5]});
-        let maiToken = await HumanStandardToken.new(1000000, "FakeDAI", 18, "MAI", {from: accounts[5]});
+        let howToken = await PausableToken.at(token);
+        let daiToken = await PausableToken.new("FakeDAI", "DAI", accounts[5], 1000000);
+        let laiToken = await PausableToken.new("FakeDAI", "LAI", accounts[5], 1000000);
+        let kaiToken = await PausableToken.new("FakeDAI", "KAI", accounts[5], 1000000);
+        let maiToken = await PausableToken.new("FakeDAI", "MAI", accounts[5], 1000000);
     
         await daiToken.transfer(registry.address, 10, {from: accounts[5]});
         await laiToken.transfer(registry.address, 100, {from: accounts[5]});
@@ -321,6 +324,72 @@ contract('HowAreWe', function(accounts) {
         let tokensPaused = await howToken.paused();
         assert(!tokensPaused);
         howToken.transfer(accounts[5], 100, {from: accounts[2]});
+    });
+    
+    it("Verifies that I can transfer the HOWNFT to a new owner", async () => {
+        let admins = [accounts[0], accounts[1], accounts[2]];
+        let contributors = [accounts[0], accounts[1], accounts[2]];
+        let disbursements = [5000, 5000, 5000];
+        let videoHash = "QMblahblahblah";
+        let registry = await HowAreWe.new(admins, contributors, disbursements, videoHash);             
+        let token = await registry.token();
+        let howToken = await PausableToken.at(token);
+        
+        let owner = await registry.ownerOf(0);
+
+        assert(owner == registry.address, 'actual owner: '+owner);
+        await registry.transferVideoNFT(1, accounts[5], {from: accounts[1]});
+        
+        owner = await registry.ownerOf(0);
+
+        assert(owner == accounts[5]);
+    });
+    
+    it("Verifies that I can't transfer the HOWNFT to a new owner if it's already been transferred", async () => {
+        let admins = [accounts[0], accounts[1], accounts[2]];
+        let contributors = [accounts[0], accounts[1], accounts[2]];
+        let disbursements = [5000, 5000, 5000];
+        let videoHash = "QMblahblahblah";
+        let registry = await HowAreWe.new(admins, contributors, disbursements, videoHash);             
+        let token = await registry.token();
+        let howToken = await PausableToken.at(token);
+        
+        let owner = await registry.ownerOf(0);
+
+        assert(owner == registry.address);
+        await registry.transferVideoNFT(1, accounts[5], {from: accounts[1]});
+        
+        owner = await registry.ownerOf(0);
+
+        assert(owner == accounts[5]);
+        
+        try {
+            await registry.transferVideoNFT(1, accounts[5], {from: accounts[1]});
+        } catch (error){
+            return utils.ensureException(error);
+        }
+        assert(false, "Should have thrown an error");
+    });
+    
+    it("Verifies that I can't transfer the HOWNFT to a new owner as a non-admin", async () => {
+        let admins = [accounts[0], accounts[1], accounts[2]];
+        let contributors = [accounts[0], accounts[1], accounts[2]];
+        let disbursements = [5000, 5000, 5000];
+        let videoHash = "QMblahblahblah";
+        let registry = await HowAreWe.new(admins, contributors, disbursements, videoHash);             
+        let token = await registry.token();
+        let howToken = await PausableToken.at(token);
+        
+        let owner = await registry.ownerOf(0);
+
+        assert(owner == registry.address);
+        
+        try {
+            await registry.transferVideoNFT(1, accounts[5], {from: accounts[3]});
+        } catch (error){
+            return utils.ensureException(error);
+        }
+        assert(false, "Should have thrown an error");
     });
     
   // 
