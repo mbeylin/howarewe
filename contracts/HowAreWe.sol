@@ -73,19 +73,20 @@ contract HowAreWe is ERC721{
         
         admins = _admins;
 
-        // Mint the token associated with the project
+        
+        // Mint the NFT representing the video, set the owner as this contract
+        _mint(address(this), 0);
+        _setTokenURI(0, _hash);
+                
+        // Mint the HOW token associated with the project
         token = new PausableToken("HowAreWe",
                                     "HOW",
                                     address(this),
                                     100000);
-        _mint(address(this), 0);
-        _setTokenURI(0, _hash);
-                                            
+                                    
         for (uint i = 0; i < _contributors.length; i++){
             token.transfer(_contributors[i], _disbursements[i]);
         }
-        
-        //TODO: make this a 721 token, embed the IPFS hash
     }
     
     function pauseTokens(uint _adminId, address[] memory _tokens) public onlyAdmin(_adminId) {
@@ -94,9 +95,12 @@ contract HowAreWe is ERC721{
         savedBalances.push(PausedBalanceSet());
         uint lastBalanceId = savedBalances.length - 1;
         
-        savedBalances[lastBalanceId].tokenBalances[address(0)] = address(this).balance;
         for(uint i = 0; i < _tokens.length; i++){
-            savedBalances[lastBalanceId].tokenBalances[_tokens[i]] = ERC20(_tokens[i]).balanceOf(address(this));
+            if (_tokens[i] == address(0)){
+                savedBalances[lastBalanceId].tokenBalances[_tokens[i]] = address(this).balance;
+            } else {
+                savedBalances[lastBalanceId].tokenBalances[_tokens[i]] = ERC20(_tokens[i]).balanceOf(address(this));
+            }
         }
         
         token.pause();
@@ -112,6 +116,7 @@ contract HowAreWe is ERC721{
         
         for (uint i = 0; i < _tokenHolders.length; i++){
             require(!lastBalance.paidTokenHolders[_tokenHolders[i]]);
+
             lastBalance.paidTokenHolders[_tokenHolders[i]] = true;
             for(uint j = 0; j < _tokens.length; j++){
                 uint transferAmount = (lastBalance.tokenBalances[_tokens[j]] * 
