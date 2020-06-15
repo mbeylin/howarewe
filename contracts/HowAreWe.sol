@@ -111,7 +111,7 @@ contract HowAreWe is ERC721{
         token.unpause();
     }
     
-    function payoutTokens(uint _adminId, address payable [] memory _tokenHolders, address[] memory _tokens) public onlyAdmin(_adminId) isPaused {
+    function payoutTokens(uint _adminId, address payable[] memory _tokenHolders, address[] memory _tokens) public onlyAdmin(_adminId) isPaused {
         PausedBalanceSet storage lastBalance = savedBalances[savedBalances.length - 1];
         
         for (uint i = 0; i < _tokenHolders.length; i++){
