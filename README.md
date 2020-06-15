@@ -23,7 +23,7 @@ When the contract is first deployed, a number of things occur:
 
 Users may then contribute to the HowAreWe contract as they please, sending any ERC20 token or ETH directly to the address of the contract.
 
-**Token Disbursement**
+**3. Token Disbursement**
 
 In order to disburse contributions to token holders, a number of steps occur:
     
