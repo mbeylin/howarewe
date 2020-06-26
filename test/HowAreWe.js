@@ -272,20 +272,24 @@ contract('HowAreWe', function(accounts) {
         await laiToken.transfer(registry.address, 100, {from: accounts[5]});
         await kaiToken.transfer(registry.address, 1000, {from: accounts[5]});
         await maiToken.transfer(registry.address, 10000, {from: accounts[5]});
+        await registry.send(10, {from: accounts[5]});
         
-        await registry.pauseTokens(1, [daiToken.address, laiToken.address, kaiToken.address, maiToken.address], {from: accounts[1]});
+        await registry.pauseTokens(1, ['0x0000000000000000000000000000000000000000', daiToken.address, laiToken.address, kaiToken.address, maiToken.address], {from: accounts[1]});
         
-        await registry.payoutTokens(1, [accounts[0], accounts[1], accounts[2]], [daiToken.address, laiToken.address, kaiToken.address, maiToken.address], {from: accounts[1]});
+        await registry.payoutTokens(1, [accounts[0], accounts[1], accounts[2]], ['0x0000000000000000000000000000000000000000', daiToken.address, laiToken.address, kaiToken.address, maiToken.address], {from: accounts[1]});
         
         let daiLeftover = await daiToken.balanceOf(registry.address);
         let laiLeftover = await laiToken.balanceOf(registry.address);
         let kaiLeftover = await kaiToken.balanceOf(registry.address);
         let maiLeftover = await maiToken.balanceOf(registry.address);
+        let ethLeftover = await web3.eth.getBalance(registry.address);
         
         assert(parseInt(daiLeftover, 10) == 0);
         assert(parseInt(laiLeftover, 10) == 0);
         assert(parseInt(kaiLeftover, 10) == 0);
         assert(parseInt(maiLeftover, 10) == 0);
+        assert(parseInt(ethLeftover, 10) == 0);
+
         
         let daiBalance0 = await daiToken.balanceOf(accounts[0]);
         let daiBalance1 = await daiToken.balanceOf(accounts[1]);

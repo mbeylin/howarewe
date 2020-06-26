@@ -141,4 +141,6 @@ contract HowAreWe is ERC721{
         require(ownerOf(0) == address(this)); // Can only transfer in the beginning, when this address is the owner
         _transfer(address(this), _newOwner, 0);
     }
+    
+    fallback() external payable { }
 }
