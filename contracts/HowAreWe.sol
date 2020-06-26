@@ -5,44 +5,22 @@ import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/token/ERC20/ERC20Pausable.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
-contract PausableToken is ERC20Pausable, Ownable{
-    
-    constructor (
-        string memory name,
-        string memory symbol,
-        address initialAccount,
-        uint256 initialBalance
-    ) public ERC20(name, symbol) {
-        _mint(initialAccount, initialBalance);
-    }
-
-    function pause() external onlyOwner {
-        _pause();
-    }
-
-    function unpause() external onlyOwner {
-        _unpause();
-    }
-}
-
 
 /// @title HowAreWe
-/// @dev A contract for issuing bounties on Ethereum paying in ETH, ERC20, or ERC721 tokens
+/// @dev A contract to issue the HOW ERC20 token, the HOW ARE WE NFT, and to collect donations for the project
+/// @author Mark Beylin <beylin.mark@gmail.com>, code reviewed by Dean Eignmann <goncalo.sa@consensys.net>
+
 contract HowAreWe is ERC721{
 
     using SafeMath for uint256;
-
-    // - pause all token Transfers (only admin)
-    // - pay out money to an array of addresses
-    // - claim money
-    // - resume token Transfers
-
 
     address[] public admins;
 
     PausableToken public token;
     
     PausedBalanceSet[] savedBalances;
+    
+    string public plaque = "In loving memory of those who lost their lives and their minds during the COVID-19 crisis.";
     
     
     struct PausedBalanceSet {
@@ -144,3 +122,25 @@ contract HowAreWe is ERC721{
     
     fallback() external payable { }
 }
+
+
+contract PausableToken is ERC20Pausable, Ownable{
+    
+    constructor (
+        string memory name,
+        string memory symbol,
+        address initialAccount,
+        uint256 initialBalance
+    ) public ERC20(name, symbol) {
+        _mint(initialAccount, initialBalance);
+    }
+
+    function pause() external onlyOwner {
+        _pause();
+    }
+
+    function unpause() external onlyOwner {
+        _unpause();
+    }
+}
+
