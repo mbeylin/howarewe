@@ -8,7 +8,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 /// @title HowAreWe
 /// @dev A contract to issue the HOW ERC20 token, the HOW ARE WE NFT, and to collect donations for the project
-/// @author Mark Beylin <beylin.mark@gmail.com>, code reviewed by Dean Eignmann <goncalo.sa@consensys.net>
+/// @author Mark Beylin <beylin.mark@gmail.com>, code reviewed by Dean Eignmann <dean@eigenmann.me>
 
 contract HowAreWe is ERC721{
 
@@ -20,7 +20,7 @@ contract HowAreWe is ERC721{
     
     PausedBalanceSet[] savedBalances;
     
-    string public plaque = "In loving memory of those who lost their lives and their minds during the COVID-19 crisis.";
+    string public plaque = "In loving memory of those who lost their lives during the COVID-19 crisis.";
     
     
     struct PausedBalanceSet {
