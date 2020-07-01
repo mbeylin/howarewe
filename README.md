@@ -1,7 +1,9 @@
 # How Are We
 `npm install` to install required packages
 
-`truffle test` to execute tests
+`truffle test` to execute tests 
+
+NOTE: TESTS NO LONGER PASSING AS THE FINAL CONTRACT INCLUDES HARD-CODED ADDRESSES.
 
 ### Functionality
 

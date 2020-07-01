@@ -8,13 +8,13 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 /// @title HowAreWe
 /// @dev A contract to issue the HOW ERC20 token, the HOW ARE WE NFT, and to collect donations for the project
-/// @author Mark Beylin <beylin.mark@gmail.com>, code reviewed by Dean Eignmann <dean@eigenmann.me>
+/// @author Mark Beylin <beylin.mark@gmail.com>, code reviewed by Dean Eignmann <dean@eigenmann.me> and Sylvain Laurent <s@6120.eu>
 
 contract HowAreWe is ERC721{
 
     using SafeMath for uint256;
 
-    address[] public admins;
+    address[] public admins = [0x6934476e807605C85c0702b4C672F35986e12a72, 0x51f940307620F28c03A992d6cbD93e08aDd8b598, 0xbfDb50Dc66C8Df9fd9688D8fe5A0C34126427645, 0x611B13d54F0423Bc87Abdc113Aa9d2512A472735];
 
     PausableToken public token;
     
@@ -42,29 +42,21 @@ contract HowAreWe is ERC721{
     }
 
 
-    constructor(address[] memory _admins, address[] memory _contributors, uint[] memory _disbursements, string memory _hash) 
-        ERC721("HowAreWePiece", "HOWNFT") 
+    constructor() 
+        ERC721("HOW ARE WE - UNIQUE EDITION", "HOWNFT") 
         public {
-        require(_admins.length > 0);
-        require(_contributors.length > 0);
-        require(_contributors.length == _disbursements.length);
         
-        admins = _admins;
-
         
         // Mint the NFT representing the video, set the owner as this contract
         _mint(address(this), 0);
-        _setTokenURI(0, _hash);
+        _setTokenURI(0, "ipfs://ipfs/QmQhNZiMjSxobi67RrRCsuiukq2T3w9s8rdUA8hNrjxGyD");
                 
         // Mint the HOW token associated with the project
-        token = new PausableToken("HowAreWe",
+        token = new PausableToken("HOWAREWE",
                                     "HOW",
-                                    address(this),
-                                    100000);
+                                    msg.sender,
+                                    100000000000000000000000);
                                     
-        for (uint i = 0; i < _contributors.length; i++){
-            token.transfer(_contributors[i], _disbursements[i]);
-        }
     }
     
     function pauseTokens(uint _adminId, address[] memory _tokens) public onlyAdmin(_adminId) {
@@ -143,4 +135,3 @@ contract PausableToken is ERC20Pausable, Ownable{
         _unpause();
     }
 }
-
